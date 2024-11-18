@@ -1,0 +1,63 @@
+﻿@page "/Registro/Index"
+@inject Service Service
+@inject ToastService toastService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer 
+
+<PageTitle>Index Registro</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+		<div class="card-header">
+			<div class="card-title">
+				<h3><strong>Registro</strong></h3>
+			</div>
+			<div class="text-end">
+				<a href="/Registro/Create"
+				   class="btn btn-primary">
+					<span class="bi bi-plus-square mt-3"></span> Crear
+				</a>
+			</div>
+		</div>
+		<div class="card-body">
+			<table class="table">
+				<thead class="text-naranja">
+					<tr>
+						<th class="text-naranja">id</th>
+						<th class="text-naranja">Nombre</th>
+						<th class="text-naranja">Editar</th>
+						<th class="text-naranja">Ver</th>
+						<th class="text-naranja">Eliminar</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					@foreach(var registros in ListaRegistro)
+					{
+						<tr>
+							<td>@registros.MyProperty</td>
+							<td>@registros.MyName</td>
+							<td class="text-center">
+								<a href="/Registro/Details/@registros.MyProperty" class="btn btn-outline-secondary bi bi-eye">Ver</a>
+							</td>
+							<td class="text-center">
+								<a href="/Registro/Edit/@registros.MyProperty" class="btn btn-outline-warning bi bi-pencil-square">Editar</a>
+							</td>
+							<td class="text-center">
+								<a href="/Registro/Delete/@registros.MyProperty" class="btn btn-outline-danger bi bi-trash">Eliminar</a>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+@code {
+	public List<Registro> ListaRegistro { get; set; } = new List<Registro>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		ListaRegistro = await Service.Listar(t => t.MyProperty > 0);
+	}
+}
