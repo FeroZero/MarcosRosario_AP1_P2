@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarcosRosario_AP1_P2.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20241118015631_Inicial")]
+    [Migration("20241118024700_Inicial")]
     partial class Inicial
     {
         /// <inheritdoc />
@@ -23,6 +23,23 @@ namespace MarcosRosario_AP1_P2.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("MarcosRosario_AP1_P2.Models.Registro", b =>
+                {
+                    b.Property<int>("MyProperty")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MyProperty"));
+
+                    b.Property<string>("MyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MyProperty");
+
+                    b.ToTable("Registro");
+                });
 #pragma warning restore 612, 618
         }
     }
