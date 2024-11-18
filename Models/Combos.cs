@@ -2,10 +2,10 @@
 
 namespace MarcosRosario_AP1_P2.Models
 {
-	public class Registro
+	public class Combos
 	{
 		[Key]
-        public int MyProperty { get; set; }
+        public int ComboId { get; set; }
 
         public string MyName { get; set; }
     }

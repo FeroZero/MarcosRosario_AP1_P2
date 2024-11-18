@@ -34,16 +34,16 @@
 					@foreach(var registros in ListaRegistro)
 					{
 						<tr>
-							<td>@registros.MyProperty</td>
+							<td>@registros.ComboId</td>
 							<td>@registros.MyName</td>
 							<td class="text-center">
-								<a href="/Registro/Details/@registros.MyProperty" class="btn btn-outline-secondary bi bi-eye">Ver</a>
+								<a href="/Registro/Details/@registros.ComboId" class="btn btn-outline-secondary bi bi-eye">Ver</a>
 							</td>
 							<td class="text-center">
-								<a href="/Registro/Edit/@registros.MyProperty" class="btn btn-outline-warning bi bi-pencil-square">Editar</a>
+								<a href="/Registro/Edit/@registros.ComboId" class="btn btn-outline-warning bi bi-pencil-square">Editar</a>
 							</td>
 							<td class="text-center">
-								<a href="/Registro/Delete/@registros.MyProperty" class="btn btn-outline-danger bi bi-trash">Eliminar</a>
+								<a href="/Registro/Delete/@registros.ComboId" class="btn btn-outline-danger bi bi-trash">Eliminar</a>
 							</td>
 						</tr>
 					}
@@ -54,10 +54,10 @@
 </div>
 
 @code {
-	public List<Registro> ListaRegistro { get; set; } = new List<Registro>();
+	public List<Combos> ListaRegistro { get; set; } = new List<Combos>();
 
 	protected override async Task OnInitializedAsync()
 	{
-		ListaRegistro = await Service.Listar(t => t.MyProperty > 0);
+		ListaRegistro = await Service.Listar(t => t.ComboId > 0);
 	}
 }

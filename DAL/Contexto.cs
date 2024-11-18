@@ -7,6 +7,6 @@ namespace MarcosRosario_AP1_P2.DAL
 	{
 		public Contexto(DbContextOptions<Contexto> options) : base(options) { }
 
-		public DbSet<Registro> Registro { get; set; }
-	}
+		public DbSet<Combos> Registro { get; set; }
+    }
 }

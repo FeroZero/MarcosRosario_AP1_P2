@@ -14,13 +14,13 @@ namespace MarcosRosario_AP1_P2.Services
             return true;
         }
 
-		private async Task<bool> Insertar(Registro registro)
+		private async Task<bool> Insertar(Combos registro)
 		{
             await using var contexto = await DbFactory.CreateDbContextAsync();
             return true;
         }
 
-		private async Task<bool> Modificar(Registro registro)
+		private async Task<bool> Modificar(Combos registro)
 		{
 			await using var contexto = await DbFactory.CreateDbContextAsync();
 			return true;
@@ -32,19 +32,19 @@ namespace MarcosRosario_AP1_P2.Services
             return true;
         }
 
-		public async Task<List<Registro>> Listar(Expression<Func<Registro, bool>> registro)
+		public async Task<List<Combos>> Listar(Expression<Func<Combos, bool>> registro)
 		{
             await using var contexto = await DbFactory.CreateDbContextAsync();
             return null;
         }
 
 
-		public async Task<Registro?> Buscar(int id)
+		public async Task<Combos?> Buscar(int id)
 		{
             await using var contexto = await DbFactory.CreateDbContextAsync();
             return null;
         }
-		public async Task<bool> Guardar(Registro registro)
+		public async Task<bool> Guardar(Combos registro)
 		{
 			return true;
 		}
