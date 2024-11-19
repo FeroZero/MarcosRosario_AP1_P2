@@ -12,6 +12,19 @@ namespace MarcosRosario_AP1_P2.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "articulos",
+                columns: table => new
+                {
+                    ArticuloId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_articulos", x => x.ArticuloId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Combos",
                 columns: table => new
                 {
@@ -46,12 +59,15 @@ namespace MarcosRosario_AP1_P2.Migrations
             migrationBuilder.InsertData(
                 table: "CombosDetalle",
                 columns: new[] { "DetalleId", "ArticuloId", "Cantidad", "ComboId", "Costo" },
-                values: new object[] { 1, 1, 10, 0, 0 });
+                values: new object[] { 1, 0, 10, 0, 0 });
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "articulos");
+
             migrationBuilder.DropTable(
                 name: "Combos");
 

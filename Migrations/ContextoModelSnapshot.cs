@@ -22,6 +22,23 @@ namespace MarcosRosario_AP1_P2.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("MarcosRosario_AP1_P2.Models.Articulo", b =>
+                {
+                    b.Property<int>("ArticuloId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArticuloId"));
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ArticuloId");
+
+                    b.ToTable("articulos");
+                });
+
             modelBuilder.Entity("MarcosRosario_AP1_P2.Models.Combos", b =>
                 {
                     b.Property<int>("ComboId")
@@ -76,7 +93,7 @@ namespace MarcosRosario_AP1_P2.Migrations
                         new
                         {
                             DetalleId = 1,
-                            ArticuloId = 1,
+                            ArticuloId = 0,
                             Cantidad = 10,
                             ComboId = 0,
                             Costo = 0

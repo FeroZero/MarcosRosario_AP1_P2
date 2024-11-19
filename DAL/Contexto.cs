@@ -16,7 +16,7 @@ namespace MarcosRosario_AP1_P2.DAL
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<CombosDetalle>().HasData(new List<CombosDetalle>()
             {
-                new CombosDetalle() {DetalleId = 1, ArticuloId = 1, Cantidad = 10, },
+                new CombosDetalle() {DetalleId = 1, Cantidad = 10},
             });
         }
     }
