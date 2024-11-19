@@ -1,5 +1,5 @@
 ﻿@page "/Registro/Index"
-@inject Service Service
+@inject ComboService Service
 @inject ToastService toastService
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer 
@@ -31,19 +31,19 @@
 				</thead>
 
 				<tbody>
-					@foreach(var registros in ListaRegistro)
+					@foreach(var Combos in ListaCombos)
 					{
 						<tr>
-							<td>@registros.ComboId</td>
-							<td>@registros.MyName</td>
+							<td>@Combos.ComboId</td>
+							<td>@Combos.</td>
 							<td class="text-center">
-								<a href="/Registro/Details/@registros.ComboId" class="btn btn-outline-secondary bi bi-eye">Ver</a>
+								<a href="/Registro/Details/@Combos.ComboId" class="btn btn-outline-secondary bi bi-eye">Ver</a>
 							</td>
 							<td class="text-center">
-								<a href="/Registro/Edit/@registros.ComboId" class="btn btn-outline-warning bi bi-pencil-square">Editar</a>
+								<a href="/Registro/Edit/@Combos.ComboId" class="btn btn-outline-warning bi bi-pencil-square">Editar</a>
 							</td>
 							<td class="text-center">
-								<a href="/Registro/Delete/@registros.ComboId" class="btn btn-outline-danger bi bi-trash">Eliminar</a>
+								<a href="/Registro/Delete/@Combos.ComboId" class="btn btn-outline-danger bi bi-trash">Eliminar</a>
 							</td>
 						</tr>
 					}
@@ -54,10 +54,10 @@
 </div>
 
 @code {
-	public List<Combos> ListaRegistro { get; set; } = new List<Combos>();
+	public List<Combos> ListaCombos { get; set; } = new List<Combos>();
 
 	protected override async Task OnInitializedAsync()
 	{
-		ListaRegistro = await Service.Listar(t => t.ComboId > 0);
+		ListaCombos = await Service.Listar(t => t.ComboId > 0);
 	}
 }
