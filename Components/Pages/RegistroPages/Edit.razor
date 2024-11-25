@@ -1,0 +1,154 @@
+﻿@page "/Registro/Edit/{ComboId:int}"
+@inject ComboService comboService
+@inject ArticuloService articuloService
+@inject ToastService toastService
+@inject NavigationManager navigationManager
+@rendermode InteractiveServer
+
+<PageTitle>Create</PageTitle>
+<EditForm Model="Combos" OnValidSubmit="Guardar">
+	<DataAnnotationsValidator />
+	<div class="container">
+		<div class="card shadow">
+			@*header*@
+			<div class="card-header">
+				<h3><strong>Editar Combo</strong></h3>
+			</div>
+			@*body*@
+			<div class="card-body">
+				<div class="row">
+					<div class="col-3">
+						<label class="form-label"><strong>Combo</strong></label>
+						<InputText class="form-control" @bind-Value="Combos.Descripcion"></InputText>
+						<ValidationMessage For="(()=> Combos.Descripcion)" />
+
+						<label class="form-label"><strong>Fecha</strong></label>
+						<InputDate class="form-control" @bind-Value="Combos.Fecha"></InputDate>
+						<ValidationMessage For="(()=> Combos.Fecha)" />
+
+						<label class="form-label"><strong>Precio</strong></label>
+						<InputNumber class="form-control" @bind-Value="Combos.Precio"></InputNumber>
+						<ValidationMessage For="(()=> Combos.Precio)" />
+
+						<label class="form-label"><strong>Vendido</strong></label>
+						<InputSelect class="form-control" @bind-Value="Combos.Vendido">
+							<option value="true">Vendido</option>
+							<option value="false">No Vendido</option>
+						</InputSelect>
+						<ValidationMessage For="(()=> Combos.Vendido)" />
+					</div>
+				</div>
+				<div class="border border-success p-3 mt-3">
+					<h5>Detalles articulos utilizados</h5>
+					<div class="row">
+						<Detalles ListArticulos="ListArticulos"
+								  ArticuloId="DetalleSeleccionado.ArticuloId"
+								  Cantidad="DetalleSeleccionado.Cantidad"
+								  ArticuloSeleccionado=" AgregarDetalle" />
+					</div>
+					<table class="table table-light table-hover">
+						<thead class="table table-striped ">
+							<tr class="text-center">
+								@*ArticuloId*@
+								<th>ArticuloId</th>
+								@*CantidadRequerida*@
+								<th>Cantidad</th>
+
+								<th>Remover</th>
+							</tr>
+						</thead>
+						<tbody>
+							@foreach (var detalle in Combos.CombosDetalle)
+							{
+								<tr class="text-center">
+									<th>@detalle.ArticuloId</th>
+									<th>@detalle.Cantidad</th>
+									<th>
+										<button type="button" @onclick=" ()=> Eliminar(detalle)" class="btn btn-outline-danger bi bi-trash mt-2"> Remover</button>
+									</th>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+				@*footer*@
+				<div class="card-footer">
+					<a href="/Registro/Index" class="btn btn-outline-warning bi bi-arrow-90deg-left"></a>
+					<button type="button" class="btn btn-outline-primary bi bi-arrow-counterclockwise" @onclick="Nuevo"></button>
+					<button type="submit" class="btn btn-outline-success bi bi-floppy-fill"></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</EditForm>
+
+@code {
+	[Parameter]
+	public int CombosId { get; set; }
+	public Combos Combos { get; set; } = new Combos();
+	public List<Articulos> ListArticulos { get; set; } = [];
+	public CombosDetalle DetalleSeleccionado { get; set; } = new CombosDetalle();
+
+	protected override async Task OnInitializedAsync()
+	{
+		Combos = await comboService.Buscar(CombosId);
+		ListArticulos = await articuloService.Listar(p => p.ArticuloId > 0);
+	}
+
+	public async Task Nuevo()
+	{
+		Combos = new Combos();
+	}
+
+	public async Task Guardar()
+	{
+		var crear = await comboService.Guardar(Combos);
+		if (crear)
+		{
+			toastService.Notify(new(ToastType.Success,
+			iconName: IconName.None,
+			title: "Exito",
+			helpText: $"{DateTime.Now}",
+			message: $"Se a guardo el Combo correctamente."));
+			Nuevo();
+			navigationManager.NavigateTo("/Registro/Index");
+			return;
+		}
+		else
+		{
+			toastService.Notify(new(ToastType.Danger,
+			iconName: IconName.None,
+			title: "Error",
+			helpText: $"{DateTime.Now}",
+			message: $"No se agrego correctamente."));
+		}
+	}
+	public async Task AgregarDetalle((Articulos articulos, int cantidad) seleccion)
+	{
+		var ArticuloExiste = Combos.CombosDetalle
+		.FirstOrDefault(A => A.ArticuloId == seleccion.articulos.ArticuloId);
+		if (ArticuloExiste != null)
+		{
+			ArticuloExiste.Cantidad += seleccion.cantidad;
+		}
+		else
+		{
+			var Detalle = new CombosDetalle
+				{
+					ArticuloId = seleccion.articulos.ArticuloId,
+					Cantidad = seleccion.cantidad,
+					Costo = seleccion.articulos.Costo
+				};
+			Combos.CombosDetalle.Add(Detalle);
+			DetalleSeleccionado = new CombosDetalle();
+			await Task.CompletedTask;
+		}
+	}
+
+	public void Eliminar(CombosDetalle detalle)
+	{
+		Combos.CombosDetalle.Remove(detalle);
+		DetalleSeleccionado.Cantidad = detalle.Cantidad;
+		DetalleSeleccionado.ArticuloId = detalle.ArticuloId;
+	}
+}
