@@ -9,14 +9,16 @@ namespace MarcosRosario_AP1_P2.DAL
 
 		public DbSet<Combos> Combos { get; set; }
 		public DbSet<CombosDetalle> CombosDetalle { get; set; }
-        public DbSet<Articulo> articulos { get; set; }
+        public DbSet<Articulos> Articulos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<CombosDetalle>().HasData(new List<CombosDetalle>()
+            modelBuilder.Entity<Articulos>().HasData(new List<Articulos>()
             {
-                new CombosDetalle() {DetalleId = 1, Cantidad = 10},
+                new () {ArticuloId = 1, Descripcion = "CPU"},
+                new () {ArticuloId = 2, Descripcion = "GPU"},
+                new () {ArticuloId = 3, Descripcion = "Power"}
             });
         }
     }
