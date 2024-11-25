@@ -5,7 +5,7 @@
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
-<PageTitle>Create</PageTitle>
+<PageTitle>Crear</PageTitle>
 <EditForm Model="Combos" OnValidSubmit="Guardar">
 	<DataAnnotationsValidator />
 	<div class="container">
@@ -31,10 +31,7 @@
 						<ValidationMessage For="(()=> Combos.Precio)" />
 
 						<label class="form-label"><strong>Vendido</strong></label>
-						<InputSelect class="form-control" @bind-Value="Combos.Vendido">
-							<option value="true">Vendido</option>
-							<option value="false">No Vendido</option>
-						</InputSelect>
+						<InputCheckbox @bind-Value="Combos.Vendido" />
 						<ValidationMessage For="(()=> Combos.Vendido)" />
 					</div>
 				</div>
@@ -50,7 +47,9 @@
 						<thead class="table table-striped ">
 							<tr class="text-center">
 								@*ArticuloId*@
-								<th>ArticuloId</th>
+								<th>Id</th>
+								@*ArticuloId*@
+								<th>Articulo</th>
 								@*CantidadRequerida*@
 								<th>Cantidad</th>
 
@@ -60,11 +59,14 @@
 						<tbody>
 							@foreach (var detalle in Combos.CombosDetalle)
 							{
+								var articulo = ListArticulos.FirstOrDefault(a => a.ArticuloId == detalle.ArticuloId);
+
 								<tr class="text-center">
 									<th>@detalle.ArticuloId</th>
+									<th>@(articulo != null ? articulo.Descripcion : "Artículo no encontrado")</th>
 									<th>@detalle.Cantidad</th>
 									<th>
-										<button type="button" @onclick=" ()=> Eliminar(detalle)" class="btn btn-outline-danger bi bi-trash mt-2"> Remover</button>
+										<button type="button" @onclick="()=> Eliminar(detalle)" class="btn btn-outline-danger bi bi-trash mt-2"> Remover</button>
 									</th>
 								</tr>
 							}
