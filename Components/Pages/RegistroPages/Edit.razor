@@ -1,11 +1,11 @@
-﻿@page "/Registro/Edit/{ComboId:int}"
+﻿@page "/Registro/Edit/{CombosId:int}"
 @inject ComboService comboService
 @inject ArticuloService articuloService
 @inject ToastService toastService
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
-<PageTitle>Create</PageTitle>
+<PageTitle>Editar</PageTitle>
 <EditForm Model="Combos" OnValidSubmit="Guardar">
 	<DataAnnotationsValidator />
 	<div class="container">
@@ -31,10 +31,7 @@
 						<ValidationMessage For="(()=> Combos.Precio)" />
 
 						<label class="form-label"><strong>Vendido</strong></label>
-						<InputSelect class="form-control" @bind-Value="Combos.Vendido">
-							<option value="true">Vendido</option>
-							<option value="false">No Vendido</option>
-						</InputSelect>
+						<InputCheckbox @bind-Value="Combos.Vendido" />
 						<ValidationMessage For="(()=> Combos.Vendido)" />
 					</div>
 				</div>
@@ -60,11 +57,14 @@
 						<tbody>
 							@foreach (var detalle in Combos.CombosDetalle)
 							{
+								var articulo = ListArticulos.FirstOrDefault(a => a.ArticuloId == detalle.ArticuloId);
+
 								<tr class="text-center">
 									<th>@detalle.ArticuloId</th>
+									<th>@(articulo != null ? articulo.Descripcion : "Artículo no encontrado")</th>
 									<th>@detalle.Cantidad</th>
 									<th>
-										<button type="button" @onclick=" ()=> Eliminar(detalle)" class="btn btn-outline-danger bi bi-trash mt-2"> Remover</button>
+										<button type="button" @onclick="()=> Eliminar(detalle)" class="btn btn-outline-danger bi bi-trash mt-2"> Remover</button>
 									</th>
 								</tr>
 							}
@@ -109,7 +109,7 @@
 			iconName: IconName.None,
 			title: "Exito",
 			helpText: $"{DateTime.Now}",
-			message: $"Se a guardo el Combo correctamente."));
+			message: $"Se a Edito el Combo correctamente."));
 			Nuevo();
 			navigationManager.NavigateTo("/Registro/Index");
 			return;
@@ -120,7 +120,7 @@
 			iconName: IconName.None,
 			title: "Error",
 			helpText: $"{DateTime.Now}",
-			message: $"No se agrego correctamente."));
+			message: $"Error de guardado."));
 		}
 	}
 	public async Task AgregarDetalle((Articulos articulos, int cantidad) seleccion)
