@@ -1,10 +1,84 @@
-﻿@page "/Registro/Details/{ComboId:int}"
+﻿@page "/Registro/Details/{CombosId:int}"
 @inject ComboService comboService
 @inject ArticuloService articuloService
 @inject ToastService toastService
 @inject NavigationManager navigationManager
 @rendermode InteractiveServer
 
-@code {
+<PageTitle>Detalles</PageTitle>
+<div class="container">
+	<div class="card shadow-lg">
+		@*Header*@
+		<div class="card-header bg-primary text-white text-center">
+			<h3><strong>Detalles</strong></h3>
+		</div>
+		@*Body*@
+		<div class="card-body">
+			<h5><strong>Esta seguro que quiere eliminar este Combo?</strong></h5>
+			@if (Combos != null)
+			{
+				@*Datos*@
+				<div class="mb-1">
+					<p class="mb-0">Id: @Combos.ComboId</p>
+				</div>
+				<div class="mb-1">
+					<p class="mb-0">Fecha: @Combos.Fecha</p>
+				</div>
+				<div class="mb-1">
+					<p class="mb-0">Combo: @Combos.Descripcion</p>
+				</div>
+				<div class="mb-1">
+					<p class="mb-0">Precio: @Combos.Precio</p>
+				</div>
+				<div class="mb-1">
+					<p class="mb-0">
+						Vendido: @if (Combos.Vendido)
+						{
+							<i class="bi bi-check-circle text-success"></i>
+						}
+						else
+						{
+							<i class="bi bi-x-circle text-danger"></i>
+						}
+					</p>
+				</div>
+				<div class="border border-success p-3 mt-3">
+					@foreach (var detalle in Combos.CombosDetalle)
+					{
+						var articulo = ListArticulos.FirstOrDefault(a => a.ArticuloId == detalle.ArticuloId);
 
+						<div>Id: @detalle.ArticuloId</div>
+						<div>Articulo: @(articulo != null ? articulo.Descripcion : "Artículo no encontrado")</div>
+						<div>Costo del Articulo: @detalle.Costo $</div>
+						<div>Cantidad de Articulos: @detalle.Cantidad</div>
+						<br />
+					}
+				</div>
+			}
+			else
+			{
+				<p>No se encontr&oacute; ning&uacute;n Combo con el ID especificado.</p>
+			}
+		</div>
+		@*Footer*@
+		<div class="card-footer">
+			<div class="card">
+				<a href="/Registro/Index" class="btn btn-outline-warning bi bi-arrow-90deg-left"></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public int CombosId { get; set; }
+	public Combos Combos { get; set; } = new Combos();
+	public List<Articulos> ListArticulos { get; set; } = [];
+	public CombosDetalle DetalleSeleccionado { get; set; } = new CombosDetalle();
+
+	protected override async Task OnInitializedAsync()
+	{
+		Combos = await comboService.Buscar(CombosId);
+		ListArticulos = await articuloService.Listar(p => p.ArticuloId > 0);
+	}
 }
