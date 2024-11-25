@@ -11,6 +11,8 @@ public class Articulos
 	[RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Solo letras.")]
 	public string Descripcion { get; set; }
 
+	[Required]
+	[Range(1, int.MaxValue, ErrorMessage = "No puede ser menor que 0.")]
 	public decimal Costo { get; set; }
 
 	public int Existencia { get; set; }

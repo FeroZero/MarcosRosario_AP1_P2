@@ -8,7 +8,7 @@ public class CombosDetalle
 	[Key]
 	public int DetalleId { get; set; }
 
-	[ForeignKey("ComboId")]
+	[ForeignKey("Combos")]
 	public int ComboId { get; set; }
 	public Combos? Combos { get; set; }
 
