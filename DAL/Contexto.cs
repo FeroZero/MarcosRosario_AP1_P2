@@ -13,7 +13,6 @@ public class Contexto : DbContext
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-		base.OnModelCreating(modelBuilder);
 		modelBuilder.Entity<Articulos>().HasData(
 		new List<Articulos>()
 		{
@@ -21,6 +20,6 @@ public class Contexto : DbContext
 			new () {ArticuloId = 2, Descripcion = "GPU", Costo = 300, Existencia = 5},
 			new () {ArticuloId = 3, Descripcion = "Power", Costo = 100, Existencia = 25}
 		});
-		
+		base.OnModelCreating(modelBuilder);
 	}
 }
