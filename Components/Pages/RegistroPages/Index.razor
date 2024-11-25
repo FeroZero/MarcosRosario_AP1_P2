@@ -41,7 +41,16 @@
 							<td>@Combos.Descripcion</td>
 							<td>@Combos.Fecha</td>
 							<td>@Combos.Precio</td>
-							<td>@(Combos.Vendido ? "vendido" : "no vendido")</td>
+							<td>
+								@if (Combos.Vendido)
+								{
+									<i class="bi bi-check-circle text-success"></i>
+								}
+								else
+								{
+									<i class="bi bi-x-circle text-danger"></i>
+								}
+							</td>
 							<td>
 								<a href="/Registro/Edit/@Combos.ComboId" class="btn btn-outline-warning bi bi-pencil-square">Editar</a>
 							</td>
