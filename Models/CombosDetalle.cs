@@ -21,5 +21,5 @@ public class CombosDetalle
 
 	[Required]
 	[Range(1, int.MaxValue, ErrorMessage = "No puede ser menor que 0.")]
-	public int Costo { get; set; }
+	public decimal Costo { get; set; }
 }
